@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import requests
 import folium
+from io import BytesIO
+import base64
 
 app = Flask(__name__)
 
@@ -22,9 +24,10 @@ def get_route(start, end):
 
     if data['status'] == 'OK':
         route = data['routes'][0]
-        return route
+        distance = route['legs'][0]['distance']['text']  # Mengambil jarak rute
+        return route, distance  # Mengembalikan rute dan jarak
     else:
-        return None
+        return None, None
 
 def create_map(route):
     # Membuat peta dengan Folium
@@ -37,10 +40,12 @@ def create_map(route):
         for step in leg['steps']:
             points.append([step['end_location']['lat'], step['end_location']['lng']])
 
-        folium.PolyLine(points, color="blue", weight=2.5, opacity=1).add_to(m)
+        folium.PolyLine(points, color="blue", weight=5, opacity=2).add_to(m)
 
-    # Menyimpan peta ke file HTML
-    m.save("templates/route_map.html")
+    # Mengkonversi peta menjadi string HTML
+    map_html = m._repr_html_()  # Menggunakan metode _repr_html_ untuk mendapatkan HTML peta
+    return map_html
+
 
 @app.route('/')
 def index():
@@ -51,13 +56,13 @@ def find_path():
     start = request.form['start']
     end = request.form['end']
     
-    route = get_route(start, end)
+    route, distance = get_route(start, end)
 
     if route:
-        create_map(route)
-        return render_template('route_map.html')
+        map_html = create_map(route)
+        return render_template('route_map.html', distance=distance, map_html=map_html)
     else:
-        return "Error: Tidak dapat menemukan rute", 400
+        return "Error: Tidak dapat menemukan rute", 4
 
 if __name__ == '__main__':
     app.run(debug=True)
