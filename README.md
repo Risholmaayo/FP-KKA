@@ -1,13 +1,13 @@
 my_project/
 
-  ├── app.py             
+  ├── app.py
+  
+  ├── route_map.html 
   
   ├── templates/
   
-  │         ├── index.html     
-  
-  │         └── route_map.html 
+  │ --  ├── index.html     
   
   ├── static/
   
-  │         └── style.css 
+  │  └── style.css 
