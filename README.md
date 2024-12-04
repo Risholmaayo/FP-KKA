@@ -2,11 +2,11 @@ my_project/
 
   ├── app.py
   
-  ├── route_map.html 
-  
   ├── templates/
   
-  │ -- └── index.html     
+  │ -- └── index.html
+
+  │ -- └── route_map.html 
   
   ├── static/
   
