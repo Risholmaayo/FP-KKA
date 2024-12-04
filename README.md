@@ -11,6 +11,8 @@ my_project/
   ├── static/
   
   │ -- └── style.css 
+  
+  │ -- └── places.json 
 
 
     
