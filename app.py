@@ -63,24 +63,51 @@ def create_map(route):
     map_html = m._repr_html_()  # Menggunakan metode _repr_html_ untuk mendapatkan HTML peta
     return map_html
 
-
+def estimate_price(vehicle, weight):
+    # Estimasi harga berdasarkan jenis kendaraan dan berat barang
+    base_price = 10000  # Harga dasar dalam rupiah
+    
+    # Estimasi harga per kendaraan
+    if vehicle == "motor":
+        price_per_kg = 100  # Rp 100 per kg untuk motor
+    elif vehicle == "mobil":
+        price_per_kg = 200  # Rp 200 per kg untuk mobil
+    elif vehicle == "truk_sedang":
+        price_per_kg = 500  # Rp 500 per kg untuk truk sedang
+    elif vehicle == "truk_besar":
+        price_per_kg = 1000  # Rp 1000 per kg untuk truk besar
+    else:
+        price_per_kg = 0  # Jika tidak valid
+    
+    # Estimasi harga berdasarkan berat barang
+    estimated_price = base_price + (price_per_kg * weight)
+    return estimated_price
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/find-path', methods=['POST'])
+@app.route('/find-path', methods=['POST'])
 def find_path():
     start = request.form['start']
     end = request.form['end']
+    vehicle = request.form['vehicle']
+    weight = float(request.form['weight'])
     
     route, distance = get_route(start, end)
 
     if route:
+        # Menghitung estimasi harga
+        price = estimate_price(vehicle, weight)
+        
+        # Membuat peta HTML
         map_html = create_map(route)
-        return render_template('route_map.html', distance=distance, map_html=map_html)
+        
+        # Mengirim data ke template
+        return render_template('route_map.html', distance=distance, map_html=map_html, price=price)
     else:
-        return "Error: Tidak dapat menemukan rute", 4
+        return "Error: Tidak dapat menemukan rute", 400
 
 if __name__ == '__main__':
     app.run(debug=True)
