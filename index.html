@@ -6,7 +6,13 @@
     <title>Path Finder - Google Maps API</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
-
+    <style>
+        /* Untuk auto kapitalisasi input */
+        input[type="text"] {
+            text-transform: uppercase;
+        }
+    </style>
+    
 </head>
 <body>
     <div class="container mt-5">
@@ -14,14 +20,30 @@
         <form action="/find-path" method="POST" class="mt-4">
             <div class="mb-3">
                 <label for="start" class="form-label">Titik Awal:</label>
-                <input type="text" id="start" name="start" class="form-control" placeholder="Contoh: Surabaya, Indonesia" required>
+                <input type="text" id="start" name="start" class="form-control" placeholder="..." required>
             </div>
             <div class="mb-3">
                 <label for="end" class="form-label">Titik Akhir:</label>
-                <input type="text" id="end" name="end" class="form-control" placeholder="Contoh: Malang, Indonesia" required>
+                <input type="text" id="end" name="end" class="form-control" placeholder="..." required>
+            </div>
+            <div class="mb-3">
+                <label for="vehicle" class="form-label">Jenis Kendaraan:</label>
+                <select id="vehicle" name="vehicle" class="form-control" required>
+                    <option value="motor">Motor</option>
+                    <option value="mobil">Mobil</option>
+                    <option value="truk_sedang">Truk Sedang</option>
+                    <option value="truk_besar">Truk Besar</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="weight" class="form-label">Berat Barang (kg):</label>
+                <input type="number" id="weight" name="weight" class="form-control" required min="1">
             </div>
             <button type="submit" class="btn btn-primary w-100">Cari Jalur</button>
         </form>
+    
     </div>
+
+    
 </body>
 </html>
