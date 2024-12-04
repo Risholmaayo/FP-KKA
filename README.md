@@ -11,3 +11,10 @@ my_project/
   ├── static/
   
   │ -- └── style.css 
+
+
+`
+pip install requests
+pip install flask
+pip install folium
+`
