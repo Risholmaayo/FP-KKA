@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Finder - Google Maps API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Dijkstra Path Finder - Google Maps API</h1>
+        <form action="/find-path" method="POST" class="mt-4">
+            <div class="mb-3">
+                <label for="start" class="form-label">Titik Awal:</label>
+                <input type="text" id="start" name="start" class="form-control" placeholder="Contoh: Surabaya, Indonesia" required>
+            </div>
+            <div class="mb-3">
+                <label for="end" class="form-label">Titik Akhir:</label>
+                <input type="text" id="end" name="end" class="form-control" placeholder="Contoh: Malang, Indonesia" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Cari Jalur</button>
+        </form>
+    </div>
+</body>
+</html>
