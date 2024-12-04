@@ -30,9 +30,26 @@ def get_route(start, end):
         return None, None
 
 def create_map(route):
-    # Membuat peta dengan Folium
+    # Mendapatkan lokasi start dan end
     start_location = route['legs'][0]['start_location']
-    m = folium.Map(location=[start_location['lat'], start_location['lng']], zoom_start=12)
+    end_location = route['legs'][0]['end_location']
+    
+    # Membuat peta dengan Folium, zoom_start diatur lebih besar agar lebih detail
+    m = folium.Map(location=[start_location['lat'], start_location['lng']], zoom_start=15)
+
+    # Menambahkan marker untuk titik awal (Start)
+    folium.Marker(
+        location=[start_location['lat'], start_location['lng']],
+        popup="Titik Awal",  # Popup saat marker diklik
+        icon=folium.Icon(color='green', icon='cloud')
+    ).add_to(m)
+
+    # Menambahkan marker untuk titik tujuan (End)
+    folium.Marker(
+        location=[end_location['lat'], end_location['lng']],
+        popup="Titik Tujuan",  # Popup saat marker diklik
+        icon=folium.Icon(color='red', icon='cloud')
+    ).add_to(m)
 
     # Menambahkan rute ke peta
     for leg in route['legs']:
@@ -40,11 +57,12 @@ def create_map(route):
         for step in leg['steps']:
             points.append([step['end_location']['lat'], step['end_location']['lng']])
 
-        folium.PolyLine(points, color="blue", weight=5, opacity=2).add_to(m)
+        folium.PolyLine(points, color="blue", weight=5, opacity=1).add_to(m)
 
     # Mengkonversi peta menjadi string HTML
     map_html = m._repr_html_()  # Menggunakan metode _repr_html_ untuk mendapatkan HTML peta
     return map_html
+
 
 
 @app.route('/')
