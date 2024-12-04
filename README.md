@@ -13,8 +13,11 @@ my_project/
   │ -- └── style.css 
 
 
-`
-pip install requests
-pip install flask
-pip install folium
-`
+    
+    pip install requests
+    
+    pip install flask
+    
+    pip install folium
+
+
