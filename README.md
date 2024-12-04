@@ -6,8 +6,8 @@ my_project/
   
   ├── templates/
   
-  │ --  ├── index.html     
+  │ -- └── index.html     
   
   ├── static/
   
-  │  └── style.css 
+  │ -- └── style.css 
