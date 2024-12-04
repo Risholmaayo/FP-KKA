@@ -3,11 +3,18 @@ import requests
 import folium
 from io import BytesIO
 import base64
+import json
 
 app = Flask(__name__)
 
 # Ganti dengan API Key Google Maps Anda
 API_KEY = 'AIzaSyB3mqQVlYPkVxLWtsUCva5iqzLgw4Nsg5g'
+
+# Fungsi untuk membaca daftar tempat dari file JSON
+def load_places():
+    with open('static/places.json', 'r') as file:
+        data = json.load(file)
+    return data['places']
 
 def get_route(start, end):
     url = "https://maps.googleapis.com/maps/api/directions/json"
@@ -85,9 +92,9 @@ def estimate_price(vehicle, weight):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    places = load_places()  # Mengambil data tempat dari file JSON
+    return render_template('index.html', places=places)
 
-@app.route('/find-path', methods=['POST'])
 @app.route('/find-path', methods=['POST'])
 def find_path():
     start = request.form['start']
