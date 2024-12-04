@@ -11,20 +11,41 @@
         input[type="text"] {
             text-transform: uppercase;
         }
+
+        /* Style untuk daftar saran autocomplete */
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 99;
+            background-color: #fff;
+            width: 100%;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: #d4d4d4;
+        }
     </style>
-    
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Dijkstra Path Finder - Google Maps API</h1>
         <form action="/find-path" method="POST" class="mt-4">
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
                 <label for="start" class="form-label">Titik Awal:</label>
                 <input type="text" id="start" name="start" class="form-control" placeholder="..." required>
+                <div id="start-autocomplete" class="autocomplete-items"></div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
                 <label for="end" class="form-label">Titik Akhir:</label>
                 <input type="text" id="end" name="end" class="form-control" placeholder="..." required>
+                <div id="end-autocomplete" class="autocomplete-items"></div>
             </div>
             <div class="mb-3">
                 <label for="vehicle" class="form-label">Jenis Kendaraan:</label>
@@ -41,9 +62,47 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Cari Jalur</button>
         </form>
-    
     </div>
 
-    
+    <script>
+        // Fungsi untuk autocomplete
+        function autocomplete(inputId, suggestionsId, places) {
+            const inputElement = document.getElementById(inputId);
+            const suggestionsElement = document.getElementById(suggestionsId);
+
+            inputElement.addEventListener("input", function() {
+                const query = inputElement.value.toUpperCase();
+                suggestionsElement.innerHTML = "";
+                if (!query) return;
+
+                // Filter tempat yang sesuai dengan query
+                const matches = places.filter(place => place.toUpperCase().includes(query));
+
+                matches.forEach(match => {
+                    const div = document.createElement("div");
+                    div.innerHTML = match;
+                    div.addEventListener("click", function() {
+                        inputElement.value = match;
+                        suggestionsElement.innerHTML = "";
+                    });
+                    suggestionsElement.appendChild(div);
+                });
+            });
+        }
+
+        // Fetch data tempat dari JSON
+        fetch('/static/places.json')
+            .then(response => response.json())
+            .then(data => {
+                const places = data.places;
+
+                // Menjalankan autocomplete untuk Titik Awal dan Titik Akhir
+                autocomplete("start", "start-autocomplete", places);
+                autocomplete("end", "end-autocomplete", places);
+            })
+            .catch(error => {
+                console.error('Error loading places data:', error);
+            });
+    </script>
 </body>
 </html>
